@@ -1,0 +1,37 @@
+{
+  "name": "zwp78v--run",
+  "version": "0.0.0",
+  "private": true,
+  "dependencies": {
+    "@progress/kendo-data-query": "^1.6.0",
+    "@progress/kendo-drawing": "^1.17.0",
+    "@progress/kendo-licensing": "^1.2.2",
+    "@progress/kendo-react-animation": "^5.5.0",
+    "@progress/kendo-react-buttons": "^5.5.0",
+    "@progress/kendo-react-data-tools": "^5.5.0",
+    "@progress/kendo-react-dateinputs": "^5.5.0",
+    "@progress/kendo-react-dropdowns": "^5.5.0",
+    "@progress/kendo-react-excel-export": "^5.5.0",
+    "@progress/kendo-react-grid": "^5.5.0",
+    "@progress/kendo-react-inputs": "^5.5.0",
+    "@progress/kendo-react-intl": "^5.5.0",
+    "@progress/kendo-react-pdf": "^5.5.0",
+    "@progress/kendo-react-popup": "^5.5.0",
+    "@progress/kendo-react-treeview": "^5.5.0",
+    "cldr-core": "^41.0.0",
+    "cldr-dates-full": "^41.0.0",
+    "cldr-numbers-full": "^41.0.0",
+    "prop-types": "^15.8.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "react-scripts": "latest"
+  }
+}
