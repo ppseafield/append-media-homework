@@ -1,6 +1,6 @@
 import React from 'react';
 import { Grid, GridColumn, GridToolbar } from '@progress/kendo-react-grid';
-import { Button } from '@progress/kendo-react-buttons ';
+import { Button } from '@progress/kendo-react-buttons';
 import { filterBy, orderBy } from '@progress/kendo-data-query';
 import rawOrders from '../orders.json';
 import OrderDetailRow from './OrderDetailRow.jsx';
@@ -75,9 +75,16 @@ export default class ReviewApp extends React.Component {
     this.setState({
       dialog: {
         open: true,
-        order: newOrder(),
+        order: newOrder()
       },
     });
+  }
+  closeDialog () {
+    this.setState({
+      dialog: {
+        open: false
+      }
+    })
   }
 
   showOrders({ filter, sort, page: { skip, take } }) {
@@ -103,7 +110,10 @@ export default class ReviewApp extends React.Component {
     return (
       <main>
         {this.state.dialog.open && (
-          <OrderDialog order={this.state.dialog.order} />
+          <OrderDialog 
+            dataItem={this.state.dialog.order}
+            onClose={this.closeDialog.bind(this)} 
+          />
         )}
         <h1>Order History</h1>
         <Grid
@@ -139,7 +149,7 @@ export default class ReviewApp extends React.Component {
           }}
         >
           <GridToolbar>
-            <Button title="Add New Order" onClick={this.addNewOrder}>
+            <Button title="Add New Order" onClick={this.openNewOrderDialog.bind(this)}>
               Add New Order
             </Button>
           </GridToolbar>

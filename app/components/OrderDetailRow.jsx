@@ -34,12 +34,18 @@ export default class OrderDetailRow extends GridDetailRow {
           data={details}
           editField={'inEdit'}
           onItemChange={this.props.onItemChange}
+          style={{maxWidth: "590px"}}
         >
-          <GridToolbar>
-            <Button title="Add New" onClick={this.props.addNewDetailItem}>
-              Add New
-            </Button>
-          </GridToolbar>
+          {this.props.editable && (
+            <GridToolbar>
+              <Button
+                title="Add New"
+                onClick={this.props.addNewDetailItem}
+              >
+                Add New
+              </Button>
+            </GridToolbar>
+          )}
           <GridColumn
             field="productID"
             title="Product ID"

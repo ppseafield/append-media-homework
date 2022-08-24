@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Form, Fireld, FormElement, Field } from '@progress/kendo-react-form';
 import { GridLayout, GridLayoutItem } from '@progress/kendo-react-layout';
@@ -67,7 +68,7 @@ export default class OrderDialog extends React.Component {
   }
   render() {
     return (
-      <Dialog title={this.dialogTitle()}>
+      <Dialog title={this.dialogTitle()} onClose={this.props.onClose}>
         <Form
           onSubmit={this.handleSubmit}
           render={(formRenderProps) => (
