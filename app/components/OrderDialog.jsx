@@ -7,6 +7,7 @@ import { Input } from '@progress/kendo-react-inputs';
 import { DatePicker } from '@progress/kendo-react-dateinputs';
 import { Dialog } from '@progress/kendo-react-dialogs';
 import OrderDetailRow from './OrderDetailRow.jsx';
+import { Button } from '@progress/kendo-react-buttons';
 
 export default class OrderDialog extends React.Component {
   state = {
@@ -184,6 +185,18 @@ export default class OrderDialog extends React.Component {
                   />
                 </GridLayoutItem>
               </GridLayout>
+              <div className="k-form-buttons">
+                <Button 
+                  type="submit"
+                  themeColor="primary"
+                  // disabled={!formRenderProps.allowSubmit}
+                >
+                  Submit
+                </Button>
+                <Button onClick={this.props.onClose}>
+                  Cancel
+                </Button>
+              </div>
             </FormElement>
           )}
         />
