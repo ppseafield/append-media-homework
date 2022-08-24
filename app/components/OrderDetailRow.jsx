@@ -4,14 +4,17 @@ import { Grid, GridColumn, GridDetailRow } from '@progress/kendo-react-grid';
 export default class OrderDetailRow extends GridDetailRow {
   render() {
     const details = this.props.dataItem.details.map(
-      ({ productID, unitPrice, quantity, discount }) => {
+      ({ id, productID, unitPrice, quantity, discount }) => {
         const itemTotal = unitPrice * quantity * (1 - discount);
         return {
+          id,
           productID,
           unitPrice,
           quantity,
-          discountPercent: `${discount * 100}%`,
+          discount,
+          discountPercent: discount * 100,
           itemTotal,
+          inEdit: this.props.editable,
         };
       }
     );
@@ -24,7 +27,7 @@ export default class OrderDetailRow extends GridDetailRow {
         <Grid
           data={details}
           editField={'inEdit'}
-          onItemChange={this.props.onItemChange || null}
+          onItemChange={this.props.onItemChange}
         >
           <GridColumn
             field="productID"
@@ -42,7 +45,7 @@ export default class OrderDetailRow extends GridDetailRow {
           <GridColumn
             field="discountPercent"
             title="Discount"
-            editor="numeric"
+            editor="text"
           />
           <GridColumn
             field="itemTotal"
