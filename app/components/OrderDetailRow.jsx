@@ -1,5 +1,6 @@
 import React from 'react';
-import { Grid, GridColumn, GridDetailRow } from '@progress/kendo-react-grid';
+import { Grid, GridColumn, GridToolbar, GridDetailRow } from '@progress/kendo-react-grid';
+import { Button } from '@progress/kendo-react-buttons';
 
 export default class OrderDetailRow extends GridDetailRow {
   render() {
@@ -29,6 +30,14 @@ export default class OrderDetailRow extends GridDetailRow {
           editField={'inEdit'}
           onItemChange={this.props.onItemChange}
         >
+          <GridToolbar>
+            <Button
+              title="Add New"
+              onClick={this.props.addNewDetailItem}
+            >
+              Add New
+            </Button>
+          </GridToolbar>
           <GridColumn
             field="productID"
             title="Product ID"

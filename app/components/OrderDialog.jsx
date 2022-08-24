@@ -22,6 +22,24 @@ export default class OrderDialog extends React.Component {
       ],
     },
   };
+  addNewDetailItem () {
+    const { nextDetailsID, dataItem: { details }} = this.state
+    this.setState({
+      nextDetailsID: nextDetailsID + 1,
+      dataItem: {
+        details: [
+          ...details,
+          {
+            id: nextDetailsID,
+            productID: 0,
+            unitPrice: 0.0,
+            quantity: 0,
+            discount: 0,
+          }
+        ]
+      }
+    })
+  }
   onItemChange(e) {
     console.log('onItemChange:', e.dataItem, e.field, e.value)
     const { details } = this.state.dataItem
@@ -168,6 +186,7 @@ export default class OrderDialog extends React.Component {
                     dataItem={this.state.dataItem}
                     editable={true}
                     onItemChange={this.onItemChange.bind(this)}
+                    addNewDetailItem={this.addNewDetailItem.bind(this)}
                   />
                 </GridLayoutItem>
               </GridLayout>
