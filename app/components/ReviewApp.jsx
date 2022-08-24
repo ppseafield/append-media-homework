@@ -9,7 +9,7 @@ import OrderDialog from './OrderDialog.jsx';
 const newOrder = () => {
   // stubbed new order
   return {
-    orderID: `99${Math.floor(Math.random() * 1000)}`,
+    orderID: '',
     customerID: '',
     employeeID: 0,
     orderDate: '',
@@ -43,6 +43,8 @@ export default class ReviewApp extends React.Component {
       return {
         ...item,
         orderDate: new Date(item.orderDate),
+        requiredDate: new Date(item.requiredDate),
+        shippedDate: new Date(item.shippedDate),
         shipAddress: {
           ...item.shipAddress,
           region:
@@ -75,16 +77,25 @@ export default class ReviewApp extends React.Component {
     this.setState({
       dialog: {
         open: true,
-        order: newOrder()
+        order: newOrder(),
       },
     });
   }
-  closeDialog () {
+  openRowOrderDialog(e) {
+    console.log(e.dataItem)
     this.setState({
       dialog: {
-        open: false
-      }
-    })
+        open: true,
+        order: e.dataItem,
+      },
+    });
+  }
+  closeDialog() {
+    this.setState({
+      dialog: {
+        open: false,
+      },
+    });
   }
 
   showOrders({ filter, sort, page: { skip, take } }) {
@@ -106,19 +117,42 @@ export default class ReviewApp extends React.Component {
     });
   }
 
+  handleSubmit(order) {
+    console.log(order);
+    this.setState({
+      orders: [
+        {
+          ...order,
+          orderID:
+            order.orderID && order.orderID.length > 0
+              ? order.orderID
+              : `99${Math.floor(Math.random() * 1000)}`,
+          region:
+            order.region && order.region.length > 0 ? order.region : 'NULL',
+        },
+        ...this.state.orders,
+      ],
+      dialog: {
+        open: false,
+      },
+    });
+  }
+
   render() {
     return (
       <main>
         {this.state.dialog.open && (
-          <OrderDialog 
+          <OrderDialog
             dataItem={this.state.dialog.order}
-            onClose={this.closeDialog.bind(this)} 
+            onClose={this.closeDialog.bind(this)}
+            handleSubmit={this.handleSubmit.bind(this)}
           />
         )}
         <h1>Order History</h1>
         <Grid
           style={{ height: '700px' }}
           data={this.showOrders(this.state)}
+          onRowClick={this.openRowOrderDialog.bind(this)}
           sortable={true}
           sort={this.state.sort}
           onSortChange={(e) => {
@@ -149,7 +183,10 @@ export default class ReviewApp extends React.Component {
           }}
         >
           <GridToolbar>
-            <Button title="Add New Order" onClick={this.openNewOrderDialog.bind(this)}>
+            <Button
+              title="Add New Order"
+              onClick={this.openNewOrderDialog.bind(this)}
+            >
               Add New Order
             </Button>
           </GridToolbar>

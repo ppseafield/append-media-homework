@@ -14,7 +14,8 @@ export default class OrderDialog extends React.Component {
     nextDetailsID: 2,
     dataItem: this.props.dataItem
   };
-  addNewDetailItem() {
+  addNewDetailItem(e) {
+    e.preventDefault()
     const {
       nextDetailsID,
       dataItem,
@@ -60,18 +61,23 @@ export default class OrderDialog extends React.Component {
     });
   }
   dialogTitle() {
-    const { order } = this.props;
-    return order?.orderID ? `Editing Order #${order.orderID}` : 'New Order';
+    const { dataItem } = this.props;
+    return dataItem.orderID.length > 0 ? `Editing Order #${dataItem.orderID}` : 'New Order';
   }
-  handleSubmit() {
+  handleSubmit(dataItem) {
     // collect detail items
-    this.props.handleSubmit();
+    
+    this.props.handleSubmit({
+      ...dataItem,
+      details: this.state.dataItem.details
+    });
   }
   render() {
     return (
       <Dialog title={this.dialogTitle()} onClose={this.props.onClose}>
         <Form
-          onSubmit={this.handleSubmit}
+          onSubmit={this.handleSubmit.bind(this)}
+          initialValues={this.props.dataItem}
           render={(formRenderProps) => (
             <FormElement style={{ maxWidth: '1050px' }}>
               <GridLayout
@@ -87,6 +93,7 @@ export default class OrderDialog extends React.Component {
                         name="customerID"
                         component={Input}
                         label="Customer ID"
+                        required={true}
                       />
                     </div>
                     <div className="mb-3">
@@ -94,6 +101,7 @@ export default class OrderDialog extends React.Component {
                         name="employeeID"
                         component={Input}
                         label="Employee ID"
+                        required={true}
                       />
                     </div>
                     <div className="mb-3">
@@ -101,6 +109,7 @@ export default class OrderDialog extends React.Component {
                         name="orderDate"
                         component={DatePicker}
                         label="Order Date"
+                        required={true}
                       />
                     </div>
                     <div className="mb-3">
@@ -108,6 +117,7 @@ export default class OrderDialog extends React.Component {
                         name="requiredDate"
                         component={DatePicker}
                         label="Required Date"
+                        required={true}
                       />
                     </div>
                     <div className="mb-3">
@@ -115,6 +125,7 @@ export default class OrderDialog extends React.Component {
                         name="shipDate"
                         component={DatePicker}
                         label="Ship Date"
+                        required={true}
                       />
                     </div>
                     <div className="mb-3">
@@ -122,6 +133,7 @@ export default class OrderDialog extends React.Component {
                         name="shipVia"
                         component={Input}
                         label="Ship Via"
+                        required={true}
                       />
                     </div>
                     <div className="mb-3">
@@ -137,6 +149,7 @@ export default class OrderDialog extends React.Component {
                         name="shipName"
                         component={Input}
                         label="Ship To"
+                        required={true}
                       />
                     </div>
                     <div className="mb-3">
@@ -144,6 +157,7 @@ export default class OrderDialog extends React.Component {
                         name="shipAddress.street"
                         component={Input}
                         label="Street Address"
+                        required={true}
                       />
                     </div>
                     <div className="mb-3">
@@ -151,6 +165,7 @@ export default class OrderDialog extends React.Component {
                         name="shipAddress.city"
                         component={Input}
                         label="City"
+                        required={true}
                       />
                     </div>
                     <div className="mb-3">
@@ -165,6 +180,7 @@ export default class OrderDialog extends React.Component {
                         name="shipAddress.postalCode"
                         component={Input}
                         label="Postal Code/ZIP"
+                        required={true}
                       />
                     </div>
                     <div className="mb-3">
@@ -172,6 +188,7 @@ export default class OrderDialog extends React.Component {
                         name="shipAddress.country"
                         component={Input}
                         label="Country"
+                        required={true}
                       />
                     </div>
                   </fieldset>
@@ -189,7 +206,6 @@ export default class OrderDialog extends React.Component {
                 <Button 
                   type="submit"
                   themeColor="primary"
-                  // disabled={!formRenderProps.allowSubmit}
                 >
                   Submit
                 </Button>
