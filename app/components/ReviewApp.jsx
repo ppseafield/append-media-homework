@@ -12,9 +12,9 @@ const newOrder = () => {
     orderID: '',
     customerID: '',
     employeeID: 0,
-    orderDate: '',
-    requiredDate: '',
-    shippedDate: '',
+    orderDate: null,
+    requiredDate: null,
+    shippedDate: null,
     shipVia: 0,
     freight: 0,
     shipName: '',
@@ -42,9 +42,9 @@ export default class ReviewApp extends React.Component {
     orders: rawOrders.map((item) => {
       return {
         ...item,
-        orderDate: new Date(item.orderDate),
-        requiredDate: new Date(item.requiredDate),
-        shippedDate: new Date(item.shippedDate),
+        orderDate: item.orderDate === 'NULL' ? null : new Date(item.orderDate),
+        requiredDate: item.requiredDate === 'NULL' ? null : new Date(item.requiredDate),
+        shippedDate: item.shippedDate === 'NULL' ? null : new Date(item.shippedDate),
         shipAddress: {
           ...item.shipAddress,
           region:
@@ -82,7 +82,6 @@ export default class ReviewApp extends React.Component {
     });
   }
   openRowOrderDialog(e) {
-    console.log(e.dataItem)
     this.setState({
       dialog: {
         open: true,
@@ -101,7 +100,7 @@ export default class ReviewApp extends React.Component {
   showOrders({ filter, sort, page: { skip, take } }) {
     return orderBy(filterBy(this.state.orders, filter), sort).slice(
       skip,
-      take + skip
+      take + skip 
     );
   }
 
@@ -117,25 +116,49 @@ export default class ReviewApp extends React.Component {
     });
   }
 
+  removeOrder(order) {
+    this.setState({
+      orders: this.state.orders.filter((o) => o.orderID != order.orderID),
+      dialog: {
+        open: false,
+      },
+    });
+  }
+
   handleSubmit(order) {
-    console.log(order);
+    if (order.hasOwnProperty('orderID')) {
+      this.setState({
+        orders: this.state.orders.map(o => o.orderID === order.orderID ? order : o),
+        dialog: {
+          open: false
+        }
+      })
+    } else {
     this.setState({
       orders: [
         {
           ...order,
           orderID:
-            order.orderID && order.orderID.length > 0
+            order?.orderID && order.orderID.length > 0
               ? order.orderID
               : `99${Math.floor(Math.random() * 1000)}`,
-          region:
-            order.region && order.region.length > 0 ? order.region : 'NULL',
+          orderDate: order.orderDate || 'NULL',
+          requiredDate: order.requiredDate || 'NULL',
+          shippedDate: order.shippedDate || 'NULL',
+          shipAddress: {
+            region:
+              order?.shipAddress?.region && order.region.length > 0
+                ? order.region
+                : 'NULL',
+          },
         },
         ...this.state.orders,
       ],
       dialog: {
         open: false,
       },
-    });
+    })
+  }
   }
 
   render() {
@@ -145,6 +168,7 @@ export default class ReviewApp extends React.Component {
           <OrderDialog
             dataItem={this.state.dialog.order}
             onClose={this.closeDialog.bind(this)}
+            removeOrder={this.removeOrder.bind(this)}
             handleSubmit={this.handleSubmit.bind(this)}
           />
         )}

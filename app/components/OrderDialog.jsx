@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Form, Fireld, FormElement, Field } from '@progress/kendo-react-form';
 import { GridLayout, GridLayoutItem } from '@progress/kendo-react-layout';
@@ -12,14 +11,11 @@ import { Button } from '@progress/kendo-react-buttons';
 export default class OrderDialog extends React.Component {
   state = {
     nextDetailsID: 2,
-    dataItem: this.props.dataItem
+    dataItem: this.props.dataItem,
   };
   addNewDetailItem(e) {
-    e.preventDefault()
-    const {
-      nextDetailsID,
-      dataItem,
-    } = this.state;
+    e.preventDefault();
+    const { nextDetailsID, dataItem } = this.state;
     this.setState({
       nextDetailsID: nextDetailsID + 1,
       dataItem: {
@@ -60,16 +56,24 @@ export default class OrderDialog extends React.Component {
       },
     });
   }
+  isExistingOrder() {
+    return this.props.dataItem.hasOwnProperty('orderID');
+  }
   dialogTitle() {
     const { dataItem } = this.props;
-    return dataItem.orderID.length > 0 ? `Editing Order #${dataItem.orderID}` : 'New Order';
+    return dataItem.hasOwnProperty('orderID')
+      ? `Editing Order #${dataItem.orderID}`
+      : 'New Order';
+  }
+  askRemove() {
+    if (window.confirm("Are you sure you want to remove this order?")) {
+      this.props.removeOrder(this.state.dataItem)
+    }
   }
   handleSubmit(dataItem) {
-    // collect detail items
-    
     this.props.handleSubmit({
       ...dataItem,
-      details: this.state.dataItem.details
+      details: this.state.dataItem.details,
     });
   }
   render() {
@@ -122,7 +126,7 @@ export default class OrderDialog extends React.Component {
                     </div>
                     <div className="mb-3">
                       <Field
-                        name="shipDate"
+                        name="shippedDate"
                         component={DatePicker}
                         label="Ship Date"
                         required={true}
@@ -203,15 +207,15 @@ export default class OrderDialog extends React.Component {
                 </GridLayoutItem>
               </GridLayout>
               <div className="k-form-buttons">
-                <Button 
-                  type="submit"
-                  themeColor="primary"
-                >
+                <Button type="submit" themeColor="primary">
                   Submit
                 </Button>
-                <Button onClick={this.props.onClose}>
-                  Cancel
-                </Button>
+                <Button onClick={this.props.onClose}>Cancel</Button>
+                {this.isExistingOrder() && (
+                  <Button themeColor="error" onClick={this.askRemove.bind(this)}>
+                    Delete
+                  </Button>
+                )}
               </div>
             </FormElement>
           )}
