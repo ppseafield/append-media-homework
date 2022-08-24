@@ -1,9 +1,41 @@
 import React from 'react';
 import { Grid, GridColumn, GridToolbar } from '@progress/kendo-react-grid';
+import { Button } from '@progress/kendo-react-buttons ';
 import { filterBy, orderBy } from '@progress/kendo-data-query';
 import rawOrders from '../orders.json';
 import OrderDetailRow from './OrderDetailRow.jsx';
 import OrderDialog from './OrderDialog.jsx';
+
+const newOrder = () => {
+  // stubbed new order
+  return {
+    orderID: `99${Math.floor(Math.random() * 1000)}`,
+    customerID: '',
+    employeeID: 0,
+    orderDate: '',
+    requiredDate: '',
+    shippedDate: '',
+    shipVia: 0,
+    freight: 0,
+    shipName: '',
+    shipAddress: {
+      street: '',
+      city: '',
+      region: '',
+      postalCode: '',
+      country: '',
+    },
+    details: [
+      {
+        id: 1,
+        productID: 0,
+        unitPrice: 0.0,
+        quantity: 0,
+        discount: 0,
+      },
+    ],
+  };
+};
 
 export default class ReviewApp extends React.Component {
   state = {
@@ -33,7 +65,20 @@ export default class ReviewApp extends React.Component {
       skip: 0,
       take: 15,
     },
+    dialog: {
+      open: false,
+      order: null,
+    },
   };
+
+  openNewOrderDialog() {
+    this.setState({
+      dialog: {
+        open: true,
+        order: newOrder(),
+      },
+    });
+  }
 
   showOrders({ filter, sort, page: { skip, take } }) {
     return orderBy(filterBy(this.state.orders, filter), sort).slice(
@@ -41,6 +86,7 @@ export default class ReviewApp extends React.Component {
       take + skip
     );
   }
+
   toggleExpandItem(toggleItem) {
     this.setState({
       orders: this.state.orders.map((i) => {
@@ -56,7 +102,9 @@ export default class ReviewApp extends React.Component {
   render() {
     return (
       <main>
-        <OrderDialog order={null} />
+        {this.state.dialog.open && (
+          <OrderDialog order={this.state.dialog.order} />
+        )}
         <h1>Order History</h1>
         <Grid
           style={{ height: '700px' }}
@@ -90,6 +138,11 @@ export default class ReviewApp extends React.Component {
             this.toggleExpandItem(e.dataItem);
           }}
         >
+          <GridToolbar>
+            <Button title="Add New Order" onClick={this.addNewOrder}>
+              Add New Order
+            </Button>
+          </GridToolbar>
           <GridColumn field="orderID" title="ID" width="140px" />
           <GridColumn
             field="orderDate"

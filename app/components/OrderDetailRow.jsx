@@ -1,5 +1,10 @@
 import React from 'react';
-import { Grid, GridColumn, GridToolbar, GridDetailRow } from '@progress/kendo-react-grid';
+import {
+  Grid,
+  GridColumn,
+  GridToolbar,
+  GridDetailRow,
+} from '@progress/kendo-react-grid';
 import { Button } from '@progress/kendo-react-buttons';
 
 export default class OrderDetailRow extends GridDetailRow {
@@ -31,10 +36,7 @@ export default class OrderDetailRow extends GridDetailRow {
           onItemChange={this.props.onItemChange}
         >
           <GridToolbar>
-            <Button
-              title="Add New"
-              onClick={this.props.addNewDetailItem}
-            >
+            <Button title="Add New" onClick={this.props.addNewDetailItem}>
               Add New
             </Button>
           </GridToolbar>
@@ -42,28 +44,37 @@ export default class OrderDetailRow extends GridDetailRow {
             field="productID"
             title="Product ID"
             editor="text"
-            editable={this.props.editable}
+            width="100px"
           />
           <GridColumn
             field="unitPrice"
             title="Price"
             format="{0:c}"
             editor="text"
+            width="100px"
           />
-          <GridColumn field="quantity" title="Qty" editor="numeric" />
+          <GridColumn
+            field="quantity"
+            title="Qty"
+            editor="numeric"
+            width="100px"
+          />
           <GridColumn
             field="discountPercent"
             title="Discount"
             editor="text"
+            width="80px"
           />
           <GridColumn
             field="itemTotal"
             title="Item Total"
+            className="text-right"
             format="{0:c}"
-            editor="text"
+            width="100px"
+            editable={false}
           />
         </Grid>
-        <p style={{ textAlign: 'center' }}>
+        <p style={{ textAlign: 'center', margin: '1em' }}>
           <strong>Grand Total: </strong>${grandTotal.toFixed(2)}
         </p>
       </div>

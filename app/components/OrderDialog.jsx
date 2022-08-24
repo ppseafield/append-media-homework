@@ -10,56 +10,49 @@ import OrderDetailRow from './OrderDetailRow.jsx';
 export default class OrderDialog extends React.Component {
   state = {
     nextDetailsID: 2,
-    dataItem: {
-      details: [
-        {
-          id: 1,
-          productID: 0,
-          unitPrice: 0.0,
-          quantity: 0,
-          discount: 0,
-        },
-      ],
-    },
+    dataItem: this.props.dataItem
   };
-  addNewDetailItem () {
-    const { nextDetailsID, dataItem: { details }} = this.state
+  addNewDetailItem() {
+    const {
+      nextDetailsID,
+      dataItem,
+    } = this.state;
     this.setState({
       nextDetailsID: nextDetailsID + 1,
       dataItem: {
+        ...dataItem,
         details: [
-          ...details,
+          ...dataItem.details,
           {
             id: nextDetailsID,
             productID: 0,
             unitPrice: 0.0,
             quantity: 0,
             discount: 0,
-          }
-        ]
-      }
-    })
+          },
+        ],
+      },
+    });
   }
   onItemChange(e) {
-    console.log('onItemChange:', e.dataItem, e.field, e.value)
-    const { details } = this.state.dataItem
+    const { details } = this.state.dataItem;
     this.setState({
       dataItem: {
         details: details.map((i) => {
           if (e.dataItem.id === i.id) {
             if (e.field === 'discountPercent') {
-              const discountPercent = Number(e.value)
+              const discountPercent = Number(e.value);
               if (isNaN(discountPercent)) {
-                return i
+                return i;
               } else {
-                return { ...i, discount: discountPercent / 100 }
+                return { ...i, discount: discountPercent / 100 };
               }
             } else {
-              return { ...i, [e.field]: e.value }
+              return { ...i, [e.field]: e.value };
             }
-           } else {
-             return i
-           }
+          } else {
+            return i;
+          }
         }),
       },
     });
@@ -81,7 +74,7 @@ export default class OrderDialog extends React.Component {
             <FormElement style={{ maxWidth: '1050px' }}>
               <GridLayout
                 rows={[{ height: 580 }]}
-                cols={[{ width: 180 }, { width: 180 }, { width: 700 }]}
+                cols={[{ width: 180 }, { width: 180 }, { width: 482 }]}
                 gap={{ rows: 0, cols: 20 }}
               >
                 <GridLayoutItem>
