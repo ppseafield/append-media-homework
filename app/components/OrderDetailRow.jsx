@@ -8,11 +8,10 @@ export default class OrderDetailRow extends GridDetailRow {
       const itemTotal =  unitPrice * quantity * (1 - discount)
       return {
         productID,
-        priceDollars: `\$${unitPrice.toFixed(2)}`,
+        unitPrice,
         quantity,
         discountPercent: `${discount * 100}%`,
-        itemTotal,
-        totalDollars: `\$${itemTotal.toFixed(2)}`
+        itemTotal
       }
     })
     const grandTotal = details.reduce((sum, detailItem) => sum + detailItem.itemTotal, 0)
@@ -20,12 +19,12 @@ export default class OrderDetailRow extends GridDetailRow {
       <div>
       <Grid data={details}>
         <GridColumn field="productID" title="Product ID" />
-        <GridColumn field="priceDollars" title="Price" />
+        <GridColumn field="unitPrice" title="Price" format="{0:c}"/>
         <GridColumn field="quantity" title="Qty" />
         <GridColumn field="discountPercent" title="Discount" />
-        <GridColumn field="totalDollars" title="Item Total" />
+        <GridColumn field="itemTotal" title="Item Total"  format="{0:c}"/>
       </Grid>
-      <p style={{'text-align': 'right'}}>
+      <p style={{'text-align': 'center'}}>
         <strong>Grand Total: </strong>
         ${grandTotal.toFixed(2)}
       </p>
